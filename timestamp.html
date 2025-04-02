@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>時間戳記轉換器 | Unix Timestamp 轉換 | 台灣時區</title>
+    <meta name="description" content="免費好用的時間戳記轉換工具，支援台灣時區(UTC+8)，可進行 Unix timestamp 和日期時間的雙向轉換。提供當前時間和今日零點時間戳記功能。">
+    <meta name="keywords" content="時間戳記轉換,timestamp converter,Unix timestamp,台灣時區,UTC+8,時間轉換,日期轉換">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com/timestamp.html">
+    <meta property="og:title" content="時間戳記轉換器 | 支援台灣時區">
+    <meta property="og:description" content="免費好用的時間戳記轉換工具，支援台灣時區(UTC+8)，可進行 Unix timestamp 和日期時間的雙向轉換。">
+    <meta property="og:image" content="https://your-domain.com/timestamp-preview.jpg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://your-domain.com/timestamp.html">
+    <meta name="twitter:title" content="時間戳記轉換器 | 支援台灣時區">
+    <meta name="twitter:description" content="免費好用的時間戳記轉換工具，支援台灣時區(UTC+8)，可進行 Unix timestamp 和日期時間的雙向轉換。">
+    <meta name="twitter:image" content="https://your-domain.com/timestamp-preview.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://your-domain.com/timestamp.html">
+
+    <!-- 網站圖示 -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <!-- 結構化資料 Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "時間戳記轉換器",
+        "description": "免費好用的時間戳記轉換工具，支援台灣時區(UTC+8)，可進行 Unix timestamp 和日期時間的雙向轉換。",
+        "applicationCategory": "工具程式",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TWD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Your Name"
+        }
+    }
+    </script>
+
+    <!-- 原有的 Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 預載入 Font Awesome 以提升效能 -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+
+    <!-- 添加 robots meta tag -->
+    <meta name="robots" content="index, follow">
+
+    <!-- 添加網站驗證碼（需要替換成您的驗證碼） -->
+    <meta name="google-site-verification" content="your-google-verification-code">
+
+    <!-- PWA 支援 -->
+    <meta name="theme-color" content="#0071e3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="時間戳記轉換器">
+
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --bg-color: #ffffff;
+            --text-color: #1d1d1f;
+            --border-color: #d2d2d7;
+            --section-bg: #f8f8f8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: clamp(15px, 4vw, 30px);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+
+        h2 {
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: clamp(20px, 4vw, 30px);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            word-wrap: break-word;
+        }
+
+        h3 {
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            flex-wrap: wrap;
+        }
+
+        h4 {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+
+        .current-time-container {
+            background-color: var(--section-bg);
+            padding: clamp(15px, 3vw, 20px);
+            border-radius: 12px;
+            margin-bottom: clamp(20px, 4vw, 30px);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(10px, 2vw, 20px);
+        }
+
+        .time-box {
+            background-color: white;
+            padding: clamp(10px, 2vw, 15px);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .time-value {
+            font-family: monospace;
+            font-size: clamp(12px, 2vw, 14px);
+            word-break: break-all;
+        }
+
+        .input-group {
+            background-color: var(--section-bg);
+            margin-bottom: clamp(20px, 4vw, 30px);
+            padding: clamp(15px, 3vw, 20px);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        @media (min-width: 640px) {
+            .input-wrapper {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        input {
+            width: 100%;
+            padding: clamp(8px, 2vw, 12px);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: clamp(14px, 2vw, 16px);
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0,113,227,0.2);
+        }
+
+        button {
+            padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
+            border-radius: 8px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: clamp(14px, 2vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            justify-content: center;
+            min-width: 120px;
+        }
+
+        @media (max-width: 639px) {
+            button {
+                width: 100%;
+            }
+        }
+
+        button:hover {
+            background-color: #0077ed;
+            transform: translateY(-1px);
+        }
+
+        .result {
+            display: none;
+            margin-top: 15px;
+            padding: clamp(10px, 2vw, 15px);
+            background-color: #fff;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            word-break: break-all;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            color: var(--primary-color);
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        /* 深色模式支援 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #ffffff;
+                --border-color: #404040;
+                --section-bg: #242424;
+            }
+
+            .container,
+            .time-box,
+            .result {
+                background-color: #2d2d2d;
+            }
+
+            .input-group,
+            .current-time-container {
+                background-color: #242424;
+            }
+
+            input {
+                background-color: #333;
+                color: white;
+            }
+
+            input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+            }
+        }
+
+        /* 印表機模式支援 */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            button {
+                display: none;
+            }
+        }
+
+        /* 新增日期時間輸入框的樣式 */
+        input[type="datetime-local"] {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 100%;
+        }
+        /* 確保日期時間選擇器在深色模式下也清晰可見 */
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            background-color: #ffffff;
+            padding: 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-clock icon"></i> 時間戳記轉換器 (台灣時區 UTC+8)</h2>
+
+        <!-- 新增當前時間和今日開始時間區塊 -->
+        <div class="current-time-container">
+            <div class="time-box">
+                <h4><i class="fas fa-clock icon"></i> 當前時間</h4>
+                <div class="time-value" id="currentDateTime"></div>
+                <div class="time-value" id="currentTimestamp"></div>
+            </div>
+            <div class="time-box">
+                <h4><i class="fas fa-sun icon"></i> 今日開始時間</h4>
+                <div class="time-value" id="todayStartDateTime"></div>
+                <div class="time-value" id="todayStartTimestamp"></div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <h3><i class="fas fa-calendar-alt icon"></i> 日期時間 → 時間戳記</h3>
+            <div class="input-wrapper">
+                <input type="datetime-local" id="datetimeInput" step="1">
+                <button onclick="convert_datetime_to_timestamp()">
+                    <i class="fas fa-exchange-alt"></i> 轉換
+                </button>
+            </div>
+            <div id="timestampResult" class="result"></div>
+        </div>
+
+        <div class="input-group">
+            <h3><i class="fas fa-stopwatch icon"></i> 時間戳記 → 日期時間</h3>
+            <div class="input-wrapper">
+                <input type="number" id="timestampInput" placeholder="請輸入時間戳記（秒）">
+                <button onclick="convert_timestamp_to_datetime()">
+                    <i class="fas fa-exchange-alt"></i> 轉換
+                </button>
+            </div>
+            <div id="datetimeResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // 設定日期時間輸入框的預設值為當前時間
+        function set_default_datetime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const defaultValue = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+            document.getElementById('datetimeInput').value = defaultValue;
+        }
+
+        // 頁面載入時設定預設時間
+        window.onload = set_default_datetime;
+
+        function convert_datetime_to_timestamp() {
+            const dateInput = document.getElementById('datetimeInput').value;
+            const timestamp = Math.floor(new Date(dateInput).getTime() / 1000);
+            const resultElement = document.getElementById('timestampResult');
+            resultElement.innerHTML = `<i class="fas fa-check-circle icon"></i> 時間戳記（秒）: ${timestamp}`;
+            resultElement.classList.add('show');
+        }
+
+        function convert_timestamp_to_datetime() {
+            const timestamp = document.getElementById('timestampInput').value;
+            const date = new Date(timestamp * 1000);
+            const formattedDate = date.toLocaleString('zh-TW', {
+                timeZone: 'Asia/Taipei',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const resultElement = document.getElementById('datetimeResult');
+            resultElement.innerHTML = `<i class="fas fa-check-circle icon"></i> 台灣時間: ${formattedDate}`;
+            resultElement.classList.add('show');
+        }
+
+        // 更新當前時間和時間戳記
+        function update_current_time() {
+            const now = new Date();
+
+            // 格式化當前時間
+            const currentFormatted = now.toLocaleString('zh-TW', {
+                timeZone: 'Asia/Taipei',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const currentTimestamp = Math.floor(now.getTime() / 1000);
+
+            // 取得今日開始時間 (台灣時間 00:00:00)
+            const todayStart = new Date(now);
+            todayStart.setHours(0, 0, 0, 0);
+            const todayStartFormatted = todayStart.toLocaleString('zh-TW', {
+                timeZone: 'Asia/Taipei',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const todayStartTimestamp = Math.floor(todayStart.getTime() / 1000);
+
+            // 更新顯示
+            document.getElementById('currentDateTime').textContent = `時間：${currentFormatted}`;
+            document.getElementById('currentTimestamp').textContent = `時間戳記：${currentTimestamp}`;
+            document.getElementById('todayStartDateTime').textContent = `時間：${todayStartFormatted}`;
+            document.getElementById('todayStartTimestamp').textContent = `時間戳記：${todayStartTimestamp}`;
+        }
+
+        // 頁面載入時初始化
+        window.onload = function() {
+            set_default_datetime();
+            update_current_time();
+            // 每秒更新一次當前時間
+            setInterval(update_current_time, 1000);
+
+            // 監聽輸入框變化，當輸入新的值時隱藏結果
+            document.getElementById('datetimeInput').addEventListener('input', function() {
+                document.getElementById('timestampResult').classList.remove('show');
+            });
+            document.getElementById('timestampInput').addEventListener('input', function() {
+                document.getElementById('datetimeResult').classList.remove('show');
+            });
+        };
+    </script>
+</body>
+</html>
